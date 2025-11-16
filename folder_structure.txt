@@ -1,0 +1,145 @@
+├── .editorconfig
+├── README.md
+├── app
+│   ├── Http
+│   │   ├── Controllers
+│   │   │   ├── Admin
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── DepartmentController.php
+│   │   │   │   ├── DoctorController.php
+│   │   │   │   ├── DocumentController.php
+│   │   │   │   ├── InvoiceController.php
+│   │   │   │   ├── PatientController.php
+│   │   │   │   └── StaffController.php
+│   │   │   ├── Auth
+│   │   │   │   ├── AuthenticatedSessionController.php
+│   │   │   │   ├── ConfirmablePasswordController.php
+│   │   │   │   ├── EmailVerificationNotificationController.php
+│   │   │   │   ├── EmailVerificationPromptController.php
+│   │   │   │   ├── NewPasswordController.php
+│   │   │   │   ├── PasswordController.php
+│   │   │   │   ├── PasswordResetLinkController.php
+│   │   │   │   ├── RegisteredUserController.php
+│   │   │   │   └── VerifyEmailController.php
+│   │   │   ├── Controller.php
+│   │   │   └── ProfileController.php
+│   │   ├── Middleware
+│   │   │   └── CheckRole.php
+│   │   └── Requests
+│   │       ├── Auth
+│   │       │   └── LoginRequest.php
+│   │       └── ProfileUpdateRequest.php
+│   ├── Models
+│   │   ├── Appointment.php
+│   │   ├── Department.php
+│   │   ├── Document.php
+│   │   ├── Invoice.php
+│   │   ├── InvoiceItem.php
+│   │   ├── Patient.php
+│   │   ├── User.php
+│   │   └── UserProfile.php
+│   ├── Providers
+│   │   └── AppServiceProvider.php
+│   └── View
+│       └── Components
+│           ├── AppLayout.php
+│           └── GuestLayout.php
+├── artisan
+├── boost.json
+├── bootstrap
+│   ├── app.php
+│   └── providers.php
+├── composer.json
+├── config
+│   ├── app.php
+│   ├── auth.php
+│   ├── cache.php
+│   ├── database.php
+│   ├── filesystems.php
+│   ├── logging.php
+│   ├── mail.php
+│   ├── queue.php
+│   ├── services.php
+│   └── session.php
+├── database
+│   ├── .gitignore
+│   ├── database.sqlite
+│   ├── factories
+│   │   └── UserFactory.php
+│   ├── migrations
+│   │   ├── 0001_01_01_000000_create_users_table.php
+│   │   ├── 0001_01_01_000001_create_cache_table.php
+│   │   ├── 0001_01_01_000002_create_jobs_table.php
+│   │   ├── 2025_11_15_000003_add_role_to_users_table.php
+│   │   ├── 2025_11_15_000004_create_user_profiles_table.php
+│   │   ├── 2025_11_15_000005_create_departments_table.php
+│   │   ├── 2025_11_15_000006_create_patients_table.php
+│   │   ├── 2025_11_15_000007_create_appointments_table.php
+│   │   ├── 2025_11_15_000008_create_invoices_table.php
+│   │   ├── 2025_11_15_000009_create_invoice_items_table.php
+│   │   └── 2025_11_15_000010_create_documents_table.php
+│   └── seeders
+│       ├── DatabaseSeeder.php
+│       └── UserSeeder.php
+├── package.json
+├── phpunit.xml
+├── postcss.config.js
+├── public
+│   ├── .htaccess
+│   ├── build
+│   │   ├── assets
+│   │   │   ├── app-ByW0VTRm.js
+│   │   │   └── app-CSxGih6d.css
+│   │   └── manifest.json
+│   ├── favicon.ico
+│   ├── index.php
+│   └── robots.txt
+├── resources
+│   ├── css
+│   │   └── app.css
+│   ├── js
+│   │   ├── app.js
+│   │   └── bootstrap.js
+│   └── views
+│       ├── auth
+│       │   ├── confirm-password.blade.php
+│       │   ├── forgot-password.blade.php
+│       │   ├── login.blade.php
+│       │   ├── register.blade.php
+│       │   ├── reset-password.blade.php
+│       │   └── verify-email.blade.php
+│       ├── components
+│       │   ├── application-logo.blade.php
+│       │   ├── auth-session-status.blade.php
+│       │   ├── danger-button.blade.php
+│       │   ├── dropdown-link.blade.php
+│       │   ├── dropdown.blade.php
+│       │   ├── input-error.blade.php
+│       │   ├── input-label.blade.php
+│       │   ├── modal.blade.php
+│       │   ├── nav-link.blade.php
+│       │   ├── primary-button.blade.php
+│       │   ├── responsive-nav-link.blade.php
+│       │   ├── secondary-button.blade.php
+│       │   └── text-input.blade.php
+│       ├── dashboard.blade.php
+│       ├── layouts
+│       │   ├── admin.blade.php
+│       │   ├── app.blade.php
+│       │   ├── guest.blade.php
+│       │   ├── navigation.blade.php
+│       │   └── sidebar.blade.php
+│       ├── profile
+│       │   ├── edit.blade.php
+│       │   └── partials
+│       │       ├── delete-user-form.blade.php
+│       │       ├── update-password-form.blade.php
+│       │       └── update-profile-information-form.blade.php
+│       └── welcome.blade.php
+├── routes
+│   ├── auth.php
+│   ├── console.php
+│   └── web.php
+├── structure.php
+├── tailwind.config.js
+└── vite.config.js
