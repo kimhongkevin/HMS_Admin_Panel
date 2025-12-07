@@ -24,8 +24,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin only routes
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Doctor Management
         Route::resource('doctors', DoctorController::class);
+        Route::patch('doctors/{doctor}/toggle-status', [DoctorController::class, 'toggleStatus'])
+            ->name('doctors.toggle-status');
+        
+        // Staff Management
         Route::resource('staff', StaffController::class);
+        
+        // Department Management
         Route::resource('departments', DepartmentController::class);
     });
 
