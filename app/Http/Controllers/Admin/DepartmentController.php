@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\User;
-use App\Models\Appointment; // Assuming you have an Appointment model
+use App\Models\Appointment;
 use App\Http\Requests\Admin\DepartmentStoreRequest;
 use App\Http\Requests\Admin\DepartmentUpdateRequest;
 use Illuminate\Http\Request;
@@ -38,7 +38,7 @@ class DepartmentController extends Controller
         $totalDepartments = Department::count();
         $activeDepartments = Department::where('is_active', true)->count();
         $totalAppointments = Appointment::count(); // Assuming an Appointment model exists
-        $totalDoctors = User::role('doctor')->count(); // Assuming role() scope on User model
+        $totalDoctors = User::where('role', 'doctor')->count();
 
         return view('admin.departments.index', compact(
             'departments',
@@ -56,7 +56,7 @@ class DepartmentController extends Controller
     public function create()
     {
         // Get only active users with the 'doctor' role for the dropdown
-        $doctors = User::role('doctor')->where('is_active', true)->orderBy('name')->get();
+        $doctors = User::where('role', 'doctor')->where('is_active', true)->orderBy('name')->get();
         return view('admin.departments.create', compact('doctors'));
     }
 
