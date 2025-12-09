@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\DocumentController;
+use App\Http\Controllers\Admin\AppointmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,10 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('doctors', DoctorController::class);
         Route::patch('doctors/{doctor}/toggle-status', [DoctorController::class, 'toggleStatus'])
             ->name('doctors.toggle-status');
-        
+
         // Staff Management
         Route::resource('staff', StaffController::class);
-        
+
         // Department Management
         Route::resource('departments', DepartmentController::class);
     });
@@ -39,11 +40,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin and Staff routes
     Route::middleware(['role:admin,staff'])->group(function () {
         Route::resource('patients', PatientController::class);
+        Route::patch('patients/{patient}/toggle-status', [PatientController::class, 'toggleStatus'])
+            ->name('patients.toggle-status');
+        Route::resource('appointments', AppointmentController::class);
         Route::resource('invoices', InvoiceController::class);
     });
 
     // Admin, Doctor, and Staff routes
     Route::middleware(['role:admin,doctor,staff'])->group(function () {
+        Route::resource('appointments', AppointmentController::class);
         Route::resource('documents', DocumentController::class);
     });
 });

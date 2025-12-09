@@ -32,6 +32,9 @@
             <a href="{{ route('invoices.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
                 Invoices
             </a>
+            <a href="{{ route('appointments.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
+                Appointments
+            </a>
         </div>
         @endif
 
@@ -40,6 +43,7 @@
             <a href="{{ route('documents.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
                 Documents
             </a>
+        
         </div>
     </nav>
 </aside>
