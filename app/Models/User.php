@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -69,5 +70,14 @@ class User extends Authenticatable
     public function isStaff()
     {
         return $this->role === 'staff';
+    }
+
+    public function scopeRole(Builder $query, string|array $roles): void
+    {
+        if (is_string($roles)) {
+            $roles = [$roles];
+        }
+
+        $query->whereIn('role', $roles);
     }
 }
