@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'employee_id',
+        'is_active',
     ];
 
     /**
@@ -44,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -70,14 +74,5 @@ class User extends Authenticatable
     public function isStaff()
     {
         return $this->role === 'staff';
-    }
-
-    public function scopeRole(Builder $query, string|array $roles): void
-    {
-        if (is_string($roles)) {
-            $roles = [$roles];
-        }
-
-        $query->whereIn('role', $roles);
     }
 }
