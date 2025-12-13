@@ -43,15 +43,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('patients/{patient}/toggle-status', [PatientController::class, 'toggleStatus'])
             ->name('patients.toggle-status');
         Route::resource('appointments', AppointmentController::class);
+        Route::get('/appointments-calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
+        Route::post('/appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.updateStatus');
+        Route::get('/api/check-availability', [AppointmentController::class, 'checkAvailability'])->name('appointments.checkAvailability');
+        Route::get('/api/doctors-by-department', [AppointmentController::class, 'getDoctorsByDepartment'])->name('appointments.doctorsByDepartment');
         Route::resource('invoices', InvoiceController::class);
     });
-
     // Admin, Doctor, and Staff routes
     Route::middleware(['role:admin,doctor,staff'])->group(function () {
         Route::resource('appointments', AppointmentController::class);
         Route::resource('documents', DocumentController::class);
         Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
     Route::get('patients/{patient}/documents', [DocumentController::class, 'patientDocuments'])->name('patient.documents');
+    });
+
+    // AJAX Routes for Appointments (accessible by admin/staff)
+    Route::middleware(['role:admin,staff,doctor'])->prefix('api')->group(function() {
+        Route::get('/get-doctors', [App\Http\Controllers\Admin\AppointmentController::class, 'getDoctors'])->name('api.doctors');
+        Route::get('/get-slots', [App\Http\Controllers\Admin\AppointmentController::class, 'getSlots'])->name('api.slots');
+    });
+
+    // Appointment Management
+    Route::middleware(['role:admin,staff,doctor'])->group(function () {
+        Route::resource('appointments', App\Http\Controllers\Admin\AppointmentController::class);
     });
 });
 
