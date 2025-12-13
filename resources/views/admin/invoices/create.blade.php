@@ -8,14 +8,14 @@
 
             <form action="{{ route('invoices.store') }}" method="POST" id="invoiceForm">
                 @csrf
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Patient</label>
                         <select name="patient_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                             <option value="">Select Patient</option>
                             @foreach($patients as $patient)
-                                <option value="{{ $patient->id }}">{{ $patient->name }} ({{ $patient->email }})</option>
+                                <option value="{{ $patient->id }}">{{$patient->patient_id}} -- {{ $patient->first_name }} {{ $patient->last_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="mt-6">
                     <label class="block text-sm font-medium text-gray-700">Notes</label>
                     <textarea name="notes" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
@@ -123,7 +123,7 @@
         const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
         const price = parseFloat(row.querySelector('.price-input').value) || 0;
         const total = qty * price;
-        
+
         row.querySelector('.row-total').textContent = '$' + total.toFixed(2);
         calculateTotals();
     }

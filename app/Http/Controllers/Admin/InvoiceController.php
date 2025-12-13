@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class InvoiceController extends Controller
 {
@@ -33,8 +35,8 @@ class InvoiceController extends Controller
         }
 
         $invoices = $query->latest()->paginate(10);
-        
-        // Stats for the top cards 
+
+        // Stats for the top cards
         $totalRevenue = Invoice::where('status', 'paid')->sum('total');
         $pendingAmount = Invoice::where('status', 'pending')->sum('total');
 
@@ -46,7 +48,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $patients = Patient::select('id', 'name', 'email')->get();
+        $patients = Patient::select('patient_id', 'first_name', 'last_name', 'email')->get();
         return view('admin.invoices.create', compact('patients'));
     }
 
@@ -74,7 +76,7 @@ class InvoiceController extends Controller
             foreach ($validated['items'] as $item) {
                 $subtotal += $item['quantity'] * $item['unit_price'];
             }
-            
+
             $tax = $validated['tax'] ?? 0;
             $discount = $validated['discount'] ?? 0;
             $total = $subtotal + $tax - $discount;
@@ -83,7 +85,7 @@ class InvoiceController extends Controller
             $invoice = Invoice::create([
                 'invoice_number' => $this->generateInvoiceNumber(),
                 'patient_id' => $validated['patient_id'],
-                'created_by' => auth()->id(),
+                'created_by' => auth()->id,
                 'invoice_date' => $validated['invoice_date'],
                 'due_date' => $validated['due_date'],
                 'subtotal' => $subtotal,
@@ -130,7 +132,7 @@ class InvoiceController extends Controller
 
         $patients = Patient::select('id', 'name')->get();
         $invoice->load('items');
-        
+
         return view('admin.invoices.edit', compact('invoice', 'patients'));
     }
 
@@ -162,7 +164,7 @@ class InvoiceController extends Controller
             foreach ($validated['items'] as $item) {
                 $subtotal += $item['quantity'] * $item['unit_price'];
             }
-            
+
             $tax = $validated['tax'] ?? 0;
             $discount = $validated['discount'] ?? 0;
             $total = $subtotal + $tax - $discount;
@@ -214,7 +216,7 @@ class InvoiceController extends Controller
         // Format: INV-YYYY-00001 [cite: 24]
         $year = date('Y');
         $lastInvoice = Invoice::whereYear('created_at', $year)->orderBy('id', 'desc')->first();
-        
+
         if ($lastInvoice) {
             $lastNumber = intval(substr($lastInvoice->invoice_number, -5));
             $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
@@ -231,9 +233,9 @@ class InvoiceController extends Controller
     public function updateStatus(Request $request, Invoice $invoice)
     {
         $request->validate(['status' => 'required|in:paid,cancelled']);
-        
+
         $invoice->update(['status' => $request->status]);
-        
+
         return back()->with('success', 'Invoice status updated to ' . ucfirst($request->status));
     }
 

@@ -84,7 +84,7 @@ class PatientController extends Controller
     public function show(Patient $patient)
     {
         // Eager load relationships for the dashboard view
-        // $patient->load(['appointments', 'invoices', 'documents']); 
+        // $patient->load(['appointments', 'invoices', 'documents']);
         return view('admin.patients.show', compact('patient'));
     }
 
@@ -138,7 +138,7 @@ class PatientController extends Controller
     {
         $year = date('Y');
         $prefix = "PAT-{$year}-";
-        
+
         $lastPatient = Patient::where('patient_id', 'like', "{$prefix}%")
                               ->orderBy('id', 'desc')
                               ->first();
