@@ -50,6 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['role:admin,doctor,staff'])->group(function () {
         Route::resource('appointments', AppointmentController::class);
         Route::resource('documents', DocumentController::class);
+        Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::get('patients/{patient}/documents', [DocumentController::class, 'patientDocuments'])->name('patient.documents');
     });
 });
 
