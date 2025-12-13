@@ -7,6 +7,8 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Patient;
 use App\Models\User;
+use App\Models\FeeCategory;
+use App\Models\Fee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -48,8 +50,13 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $patients = Patient::select('patient_id', 'first_name', 'last_name', 'email')->get();
-        return view('admin.invoices.create', compact('patients'));
+        $patients = Patient::orderBy('first_name')->active()->get();
+
+        // ADD THESE LINES
+        $feeCategories = FeeCategory::where('is_active', true)->get();
+        $fees = Fee::with('category')->where('is_active', true)->get();
+
+        return view('admin.invoices.create', compact('patients', 'feeCategories', 'fees'));
     }
 
     /**
@@ -85,7 +92,7 @@ class InvoiceController extends Controller
             $invoice = Invoice::create([
                 'invoice_number' => $this->generateInvoiceNumber(),
                 'patient_id' => $validated['patient_id'],
-                'created_by' => auth()->id,
+                'created_by' => auth()->id(),
                 'invoice_date' => $validated['invoice_date'],
                 'due_date' => $validated['due_date'],
                 'subtotal' => $subtotal,
@@ -130,10 +137,12 @@ class InvoiceController extends Controller
                 ->with('error', 'Only pending invoices can be edited.');
         }
 
-        $patients = Patient::select('id', 'name')->get();
+        $patients = Patient::orderBy('first_name')->get();
+        $feeCategories = FeeCategory::where('is_active', true)->get();
+        $fees = Fee::with('category')->where('is_active', true)->get();
         $invoice->load('items');
 
-        return view('admin.invoices.edit', compact('invoice', 'patients'));
+        return view('admin.invoices.edit', compact('invoice', 'patients', 'feeCategories', 'fees'));
     }
 
     /**

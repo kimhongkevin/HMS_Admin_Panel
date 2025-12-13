@@ -1,4 +1,4 @@
-<aside class="w-64 bg-white shadow-md min-h-screen">
+<aside class="w-64 bg-sky-200 shadow-md min-h-screen">
     <nav class="mt-5 px-2">
         <a href="{{ route('dashboard') }}" class="group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-900 hover:bg-gray-50">
             <svg class="mr-4 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,6 +19,13 @@
             </a>
             <a href="{{ route('admin.departments.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
                 Departments
+            </a>
+
+            <a href="{{ route('admin.fee-categories.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
+                Fee Categories
+            </a>
+            <a href="{{ route('admin.fees.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
+                Fee Management
             </a>
         </div>
         @endif
@@ -43,7 +50,7 @@
             <a href="{{ route('documents.index') }}" class="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-600 hover:bg-gray-50">
                 Documents
             </a>
-        
+
         </div>
     </nav>
 </aside>

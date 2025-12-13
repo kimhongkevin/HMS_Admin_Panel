@@ -22,7 +22,7 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Do     ctors</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Total Doctors</dt>
                                 <dd class="text-lg font-semibold text-gray-900">{{ $totalDoctors ?? 0 }}</dd>
                             </dl>
                         </div>
@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!-- Quick Access Modules -->
         <div class="bg-white shadow rounded-lg p-6">
