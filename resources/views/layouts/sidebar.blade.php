@@ -11,11 +11,11 @@
         </a>
 
         @if(auth()->user()->isAdmin())
-        <!-- Admin Menu -->
+        <!-- Admin Only Menu -->
         <div class="mt-6">
             <div class="flex items-center px-4 mb-3">
                 <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
-                <h3 class="px-3 text-xs font-bold text-sky-600 uppercase tracking-wider">Management</h3>
+                <h3 class="px-3 text-xs font-bold text-sky-600 uppercase tracking-wider">Admin Management</h3>
                 <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
             </div>
 
@@ -46,6 +46,26 @@
                 Departments
             </a>
 
+            <a href="{{ route('invoices.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl text-gray-700 hover:text-sky-700 hover:bg-sky-50 transition-all duration-200 mb-1.5">
+                <div class="mr-3 p-1.5 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
+                    <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                Invoices
+            </a>
+        </div>
+        @endif
+
+        @if(auth()->user()->isAdmin() || auth()->user()->isStaff())
+        <!-- Admin & Staff Menu -->
+        <div class="mt-6">
+            <div class="flex items-center px-4 mb-3">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
+                <h3 class="px-3 text-xs font-bold text-sky-600 uppercase tracking-wider">Financial</h3>
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
+            </div>
+
             <a href="{{ route('admin.fee-categories.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl text-gray-700 hover:text-sky-700 hover:bg-sky-50 transition-all duration-200 mb-1.5">
                 <div class="mr-3 p-1.5 bg-amber-100 rounded-lg group-hover:bg-amber-200 transition-colors">
                     <svg class="h-4 w-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,8 +86,7 @@
         </div>
         @endif
 
-        @if(auth()->user()->isAdmin() || auth()->user()->isStaff())
-        <!-- Patient & Invoice Menu -->
+        <!-- All Roles Menu (Admin, Doctor, Staff) -->
         <div class="mt-6">
             <div class="flex items-center px-4 mb-3">
                 <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
@@ -84,15 +103,6 @@
                 Patients
             </a>
 
-            <a href="{{ route('invoices.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl text-gray-700 hover:text-sky-700 hover:bg-sky-50 transition-all duration-200 mb-1.5">
-                <div class="mr-3 p-1.5 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
-                    <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                </div>
-                Invoices
-            </a>
-
             <a href="{{ route('appointments.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl text-gray-700 hover:text-sky-700 hover:bg-sky-50 transition-all duration-200 mb-1.5">
                 <div class="mr-3 p-1.5 bg-indigo-100 rounded-lg group-hover:bg-indigo-200 transition-colors">
                     <svg class="h-4 w-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,16 +111,6 @@
                 </div>
                 Appointments
             </a>
-        </div>
-        @endif
-
-        <!-- Documents Menu - All roles -->
-        <div class="mt-6">
-            <div class="flex items-center px-4 mb-3">
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
-                <h3 class="px-3 text-xs font-bold text-sky-600 uppercase tracking-wider">Resources</h3>
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-sky-300 to-transparent"></div>
-            </div>
 
             <a href="{{ route('documents.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl text-gray-700 hover:text-sky-700 hover:bg-sky-50 transition-all duration-200 mb-1.5">
                 <div class="mr-3 p-1.5 bg-cyan-100 rounded-lg group-hover:bg-cyan-200 transition-colors">
