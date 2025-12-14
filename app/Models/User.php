@@ -62,6 +62,16 @@ class User extends Authenticatable
         return $this->belongsTo(Department::class, 'head_doctor_id');
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'created_by');
+    }
+
+    public function patients()
+    {
+        return $this->hasMany(Patient::class, 'registered_by');
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';

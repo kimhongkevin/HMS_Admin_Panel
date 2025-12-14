@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Patient;
+use App\Models\Appointment;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -43,11 +45,10 @@ class DoctorController extends Controller
 
         $doctors = $query->orderBy('created_at', 'desc')->paginate(12);
 
-        // Statistics - MAKE SURE THESE LINES ARE HERE
+        // Statistics
         $totalDoctors = User::where('role', 'doctor')->count();
         $activeDoctors = User::where('role', 'doctor')->where('is_active', true)->count();
 
-        // IMPORTANT: Pass all variables to the view
         return view('admin.doctors.index', compact('doctors', 'totalDoctors', 'activeDoctors'));
     }
 
@@ -108,20 +109,22 @@ class DoctorController extends Controller
     public function show(User $doctor)
     {
         $doctor->load('profile');
-        
-        // Get statistics
-        $totalPatients = 0; // You can implement based on appointments
-        $totalAppointments = 0;
-        $completedAppointments = 0;
-        $pendingAppointments = 0;
 
-        return view('admin.doctors.show', compact(
-            'doctor',
-            'totalPatients',
-            'totalAppointments',
-            'completedAppointments',
-            'pendingAppointments'
-        ));
+        // Get statistics for this doctor
+        $statistics = [
+            'total_appointments' => Appointment::where('doctor_id', $doctor->id)->count(),
+            'completed_appointments' => Appointment::where('doctor_id', $doctor->id)
+                ->where('status', 'completed')
+                ->count(),
+            'pending_appointments' => Appointment::where('doctor_id', $doctor->id)
+                ->where('status', 'scheduled')
+                ->count(),
+            'total_patients' => Appointment::where('doctor_id', $doctor->id)
+                ->distinct('patient_id')
+                ->count('patient_id'),
+        ];
+        
+        return view('admin.doctors.show', compact('doctor', 'statistics'));
     }
 
     /**
