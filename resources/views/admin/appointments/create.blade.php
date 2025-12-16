@@ -21,7 +21,7 @@
                         <option value="">Select Patient</option>
                         @foreach($patients as $patient)
                         <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
-                            {{$patient->patient_id}} -- {{ $patient->first_name }} {{ $patient->last_name }} 
+                            {{$patient->patient_id}} -- {{ $patient->first_name }} {{ $patient->last_name }}
                         </option>
                         @endforeach
                     </select>
@@ -43,11 +43,10 @@
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <!-- Doctor Selection -->
                 <div class="mb-6">
                     <label for="doctor_id" class="block text-sm font-medium text-gray-700 mb-2">Doctor *</label>
-                    <select name="doctor_id" id="doctor_id" required disabled class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('doctor_id') border-red-500 @enderror">
+                    <select name="doctor_id" id="doctor_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('doctor_id') border-red-500 @enderror">
                         <option value="">Select Department First</option>
                     </select>
                     @error('doctor_id')
@@ -156,19 +155,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     timeSlots.innerHTML = '';
-                    
+
                     if (data.available_slots.length === 0) {
                         timeSlots.innerHTML = '<p class="col-span-full text-center text-gray-500">No available time slots for this date.</p>';
                     } else {
                         data.available_slots.forEach(slot => {
                             const button = document.createElement('button');
                             button.type = 'button';
-                            button.className = slot.available 
+                            button.className = slot.available
                                 ? 'px-4 py-2 border border-gray-300 rounded-md text-sm hover:bg-blue-50 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
                                 : 'px-4 py-2 border border-gray-200 rounded-md text-sm bg-gray-100 text-gray-400 cursor-not-allowed';
                             button.textContent = slot.display;
                             button.disabled = !slot.available;
-                            
+
                             if (slot.available) {
                                 button.addEventListener('click', function() {
                                     // Remove active class from all buttons
@@ -176,20 +175,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                         btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
                                         btn.classList.add('border-gray-300');
                                     });
-                                    
+
                                     // Add active class to clicked button
                                     this.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
                                     this.classList.remove('border-gray-300');
-                                    
+
                                     // Set the hidden input value
                                     appointmentDateInput.value = slot.datetime;
                                 });
                             }
-                            
+
                             timeSlots.appendChild(button);
                         });
                     }
-                    
+
                     timeSlotsLoading.style.display = 'none';
                     timeSlots.style.display = 'grid';
                 })

@@ -6,9 +6,12 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-                Department Management
-            </h2>
+            <div class="mb-6">
+                <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+                    Department Management
+                </h2>
+                <p class="text-gray-600 mt-1">Organize clinical and administrative units</p>
+            </div>
             <a href="{{ route('admin.departments.create') }}" class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add New Department

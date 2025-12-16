@@ -1,11 +1,16 @@
 @extends('layouts.admin')
 
+@section('title', 'Invoice Management')
+
 @section('content')
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        
+
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Invoices</h2>
+            <div class="mb-6">
+                <h2 class="text-3xl font-semibold text-gray-800">Invoice Management</h2>
+                <p class="text-gray-600 mt-1">Handle patient billing and payment records</p>
+            </div>
             <a href="{{ route('invoices.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 + Create Invoice
             </a>
@@ -52,8 +57,7 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $invoice->invoice_number }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ $invoice->patient->name }}</div>
-                            <div class="text-sm text-gray-500">{{ $invoice->patient->email }}</div>
+                            <div class="text-sm font-medium text-gray-900">{{ $invoice->patient->first_name }} {{ $invoice->patient->last_name }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ $invoice->invoice_date->format('M d, Y') }}
@@ -62,8 +66,8 @@
                             ${{ number_format($invoice->total, 2) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-800' : 
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-800' :
                                    ($invoice->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                                 {{ ucfirst($invoice->status) }}
                             </span>

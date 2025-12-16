@@ -94,8 +94,7 @@ class FeeController extends Controller
      */
     public function show(Fee $fee)
     {
-        $fee->load('category');
-        return view('admin.fees.show', compact('fee'));
+        //
     }
 
     /**

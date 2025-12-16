@@ -89,7 +89,7 @@ class DepartmentController extends Controller
         $totalAppointments = $department->appointments()->count();
         // Assuming doctors relationship on Department model (many-to-many or via a foreign key in User)
         // For simplicity, we'll assume a 'department_id' on the User model for doctors.
-        $assignedDoctors = User::role('doctor')->where('department_id', $department->id)->get();
+        $assignedDoctors = User::where('role', 'doctor')->where('department_id', $department->id)->get();
         $totalDoctors = $assignedDoctors->count();
 
         // Placeholder for Revenue Generated (requires Invoice/Payment models integration)
@@ -117,7 +117,7 @@ class DepartmentController extends Controller
     public function edit(Department $department)
     {
         // Get only active doctors for the dropdown
-        $doctors = User::role('doctor')->where('is_active', true)->orderBy('name')->get();
+        $doctors = User::where('role', 'doctor')->where('is_active', true)->orderBy('name')->get();
         return view('admin.departments.edit', compact('department', 'doctors'));
     }
 

@@ -89,7 +89,7 @@
                             <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">
                                 Gender
                             </label>
-                            <select name="gender" id="gender" 
+                            <select name="gender" id="gender"
                                     class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('gender') border-red-500 @enderror">
                                 <option value="">Select Gender</option>
                                 <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
@@ -119,6 +119,25 @@
                 <div class="pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Professional Information</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Department -->
+                        <div>
+                            <label for="department_id" class="block text-sm font-medium text-gray-700 mb-2">
+                                Department <span class="text-red-500">*</span>
+                            </label>
+                            <select name="department_id" id="department_id" required
+                                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('department_id') border-red-500 @enderror">
+                                <option value="">Select Department</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                        {{ $department->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('department_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Specialization -->
                         <div>
                             <label for="specialization" class="block text-sm font-medium text-gray-700 mb-2">
@@ -169,7 +188,7 @@
                             <div>
                                 <h4 class="text-sm font-semibold text-blue-900">Default Password</h4>
                                 <p class="text-sm text-blue-700 mt-1">
-                                    The default password for new doctors is <strong>password123</strong>. 
+                                    The default password for new doctors is <strong>password123</strong>.
                                     The doctor will be able to change this after their first login.
                                 </p>
                             </div>
@@ -179,11 +198,11 @@
 
                 <!-- Action Buttons -->
                 <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
-                    <a href="{{ route('admin.doctors.index') }}" 
+                    <a href="{{ route('admin.doctors.index') }}"
                        class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
                         Cancel
                     </a>
-                    <button type="submit" 
+                    <button type="submit"
                             class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                         Create Doctor
                     </button>

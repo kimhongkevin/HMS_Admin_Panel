@@ -83,8 +83,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['role:admin,doctor,staff'])->group(function () {
         Route::resource('appointments', AppointmentController::class);
         Route::resource('documents', DocumentController::class);
+        Route::resource('patients', PatientController::class);
+        Route::resource('invoices', InvoiceController::class);
         Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
         Route::get('patients/{patient}/documents', [DocumentController::class, 'patientDocuments'])->name('patient.documents');
+        Route::get('patients/{patient}/appointments', [AppointmentController::class, 'patientAppointments'])
+            ->name('patient.appointments');
+        Route::get('patients/{patient}/invoices', [InvoiceController::class, 'patientInvoices'])
+            ->name('patient.invoices');
     });
 
     // AJAX Routes for Appointments (accessible by admin/staff)

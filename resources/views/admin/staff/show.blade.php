@@ -34,7 +34,7 @@
             <div class="border-b border-gray-200 pb-5 mb-5">
                 <h3 class="text-xl font-semibold leading-6 text-gray-900">General Information</h3>
             </div>
-            
+
             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8">
                 <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">Full Name</dt>
@@ -83,7 +83,7 @@
             <div class="border-b border-gray-200 pb-5 mb-5">
                 <h3 class="text-xl font-semibold leading-6 text-gray-900">Activity & Performance</h3>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
                 <div class="bg-indigo-50 p-4 rounded-lg">
                     <p class="text-sm font-medium text-indigo-700">Patients Registered (Total)</p>
@@ -92,10 +92,6 @@
                 <div class="bg-yellow-50 p-4 rounded-lg">
                     <p class="text-sm font-medium text-yellow-700">Invoices Created (Total)</p>
                     <p class="text-2xl font-bold text-yellow-900 mt-1">{{ $staff->invoices->count() }}</p>
-                </div>
-                <div class="bg-green-50 p-4 rounded-lg">
-                    <p class="text-sm font-medium text-green-700">Documents Managed (Total)</p>
-                    <p class="text-2xl font-bold text-green-900 mt-1">{{ $staff->documents->count() }}</p>
                 </div>
             </div>
 

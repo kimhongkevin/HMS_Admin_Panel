@@ -3,13 +3,13 @@
 @section('title', 'Fee Categories')
 
 @section('content')
-<div class="py-6">
+<div class="py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="mb-6 flex justify-between items-center">
             <div>
                 <h2 class="text-3xl font-bold text-gray-800">Fee Categories</h2>
-                <p class="text-gray-600 mt-1">Manage categories for hospital fees</p>
+                <p class="text-gray-600 mt-1">Structure service charge classifications</p>
             </div>
             <a href="{{ route('admin.fee-categories.create') }}"
                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
@@ -71,8 +71,6 @@
                             </button>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('admin.fee-categories.show', $category) }}"
-                               class="text-blue-600 hover:text-blue-900 mr-3">View</a>
                             <a href="{{ route('admin.fee-categories.edit', $category) }}"
                                class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
                             <form action="{{ route('admin.fee-categories.destroy', $category) }}"

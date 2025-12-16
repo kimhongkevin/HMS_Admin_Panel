@@ -28,7 +28,8 @@ class InvoiceController extends Controller
             $search = $request->search;
             $query->where('invoice_number', 'like', "%{$search}%")
                   ->orWhereHas('patient', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
+                      $q->where('first_name', 'like', "%{$search}%");
+                      $q->orWhere('last_name', 'like', "%{$search}%");
                   });
         }
 
@@ -50,7 +51,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $patients = Patient::orderBy('first_name')->active()->get();
+        $patients = Patient::orderBy('first_name')->get();
 
         // ADD THESE LINES
         $feeCategories = FeeCategory::where('is_active', true)->get();
@@ -246,6 +247,30 @@ class InvoiceController extends Controller
         $invoice->update(['status' => $request->status]);
 
         return back()->with('success', 'Invoice status updated to ' . ucfirst($request->status));
+    }
+
+    /**
+     * Display invoices for a specific patient.
+     */
+    public function patientInvoices(Patient $patient, Request $request)
+    {
+        $query = Invoice::with(['patient', 'creator'])->where('patient_id', $patient->id);
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('invoice_number', 'like', "%{$search}%");
+        }
+
+        if ($request->has('status') && $request->status != 'all') {
+            $query->where('status', $request->status);
+        }
+
+        $invoices = $query->latest()->paginate(10);
+
+        $totalRevenue = Invoice::where('patient_id', $patient->id)->where('status', 'paid')->sum('total');
+        $pendingAmount = Invoice::where('patient_id', $patient->id)->where('status', 'pending')->sum('total');
+
+        return view('admin.invoices.index', compact('invoices', 'totalRevenue', 'pendingAmount'));
     }
 
     /**

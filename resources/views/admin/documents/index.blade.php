@@ -1,13 +1,15 @@
 @extends('layouts.admin')
 
+@section('title', 'Document Management')
+
 @section('content')
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        
         <div class="flex justify-between items-center mb-6">
-            <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-                Document Management
-            </h2>
+            <div class="mb-6">
+                <h2 class="text-3xl font-semibold text-gray-800">Document Management</h2>
+                <p class="text-gray-600 mt-1">Manage patient documents and records</p>
+            </div>
             <a href="{{ route('documents.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
                 + Upload New Document
             </a>
@@ -63,7 +65,7 @@
                                 <div class="text-sm text-gray-900">{{ $doc->patient->first_name }} {{ $doc->patient->last_name }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                     {{ $doc->document_type === 'prescription' ? 'bg-green-100 text-green-800' : '' }}
                                     {{ $doc->document_type === 'lab_report' ? 'bg-red-100 text-red-800' : '' }}
                                     {{ $doc->document_type === 'medical_record' ? 'bg-blue-100 text-blue-800' : '' }}">

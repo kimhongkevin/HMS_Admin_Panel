@@ -7,9 +7,9 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
-            <div>
-                <h2 class="font-semibold text-3xl text-gray-800 leading-tight">Appointments</h2>
-                <p class="text-gray-600 mt-1">Welcome back, manage your hospital efficiently</p>
+            <div class="mb-6">
+                <h2 class="text-3xl font-semibold text-gray-800">Appointment Management</h2>
+                <p class="text-gray-600 mt-1">Manage appointments and schedules</p>
             </div>
             <div class="flex gap-3">
                 <a href="{{ route('appointments.calendar') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
@@ -116,7 +116,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search appointments..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                     <select name="status" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
@@ -227,7 +227,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <!-- Pagination -->
             <div class="px-6 py-4 border-t border-gray-200">
                 {{ $appointments->links() }}

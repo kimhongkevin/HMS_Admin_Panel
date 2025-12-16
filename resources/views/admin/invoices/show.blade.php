@@ -3,7 +3,7 @@
 @section('content')
 <div class="py-12">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-        
+
         <div class="flex justify-between items-center mb-6">
             <a href="{{ route('invoices.index') }}" class="text-gray-600 hover:text-gray-900">&larr; Back to List</a>
             <div class="flex gap-2">
@@ -13,7 +13,7 @@
                         Download PDF
                     </a>
                 @endif
-                
+
                 @if($invoice->status === 'pending')
                     <form action="{{ route('invoices.status', $invoice) }}" method="POST">
                         @csrf @method('PATCH')
@@ -36,8 +36,8 @@
                         <h1 class="text-3xl font-bold text-gray-800">INVOICE</h1>
                         <p class="text-gray-500 mt-1">#{{ $invoice->invoice_number }}</p>
                         <div class="mt-2">
-                            <span class="px-3 py-1 text-sm font-semibold rounded-full 
-                            {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-800' : 
+                            <span class="px-3 py-1 text-sm font-semibold rounded-full
+                            {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-800' :
                                ($invoice->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                                 {{ ucfirst($invoice->status) }}
                             </span>
@@ -55,7 +55,7 @@
                 <div>
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Bill To</h3>
                     <div class="mt-2 text-gray-900">
-                        <p class="font-bold">{{ $invoice->patient->name }}</p>
+                        <p class="font-bold">{{ $invoice->patient->first_name }} {{ $invoice->patient->last_name }}</p>
                         <p>{{ $invoice->patient->email }}</p>
                         <p>{{ $invoice->patient->phone ?? '' }}</p>
                     </div>

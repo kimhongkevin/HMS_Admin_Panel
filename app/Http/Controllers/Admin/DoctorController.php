@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Patient;
 use App\Models\Appointment;
 use App\Models\UserProfile;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -57,7 +58,8 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        return view('admin.doctors.create');
+        $departments = Department::where('is_active', true)->orderBy('name')->get();
+        return view('admin.doctors.create', compact('departments'));
     }
 
     /**
@@ -74,6 +76,7 @@ class DoctorController extends Controller
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:male,female,other',
             'specialization' => 'required|string|max:255',
+            'department_id' => 'required|exists:departments,id',
             'qualification' => 'required|string|max:255',
             'license_number' => 'required|string|unique:user_profiles,license_number',
         ]);
@@ -86,6 +89,7 @@ class DoctorController extends Controller
             'password' => Hash::make('password123'),
             'role' => 'doctor',
             'is_active' => true,
+            'department_id' => $validated['department_id'],
         ]);
 
         // Create profile
@@ -123,7 +127,7 @@ class DoctorController extends Controller
                 ->distinct('patient_id')
                 ->count('patient_id'),
         ];
-        
+
         return view('admin.doctors.show', compact('doctor', 'statistics'));
     }
 
