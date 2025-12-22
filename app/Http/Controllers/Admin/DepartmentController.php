@@ -149,4 +149,5 @@ class DepartmentController extends Controller
         return redirect()->route('admin.departments.index')
             ->with('warning', 'Department "' . $department->name . '" has been deactivated.');
     }
+
 }

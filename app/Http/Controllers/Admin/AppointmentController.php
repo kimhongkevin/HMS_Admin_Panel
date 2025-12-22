@@ -79,7 +79,7 @@ class AppointmentController extends Controller
     {
         $patients = Patient::orderBy('first_name')->get();
         $departments = Department::orderBy('name')->get();
-        
+
         return view('admin.appointments.create', compact('patients', 'departments'));
     }
 
@@ -120,7 +120,7 @@ class AppointmentController extends Controller
     public function show(Appointment $appointment)
     {
         $appointment->load(['patient', 'doctor', 'department']);
-        
+
         return view('admin.appointments.show', compact('appointment'));
     }
 
@@ -135,7 +135,7 @@ class AppointmentController extends Controller
             ->where('department_id', $appointment->department_id)
             ->orderBy('name')
             ->get();
-        
+
         return view('admin.appointments.edit', compact('appointment', 'patients', 'departments', 'doctors'));
     }
 
@@ -193,6 +193,8 @@ class AppointmentController extends Controller
             ->where('status', '!=', 'cancelled')
             ->get();
 
+
+
         // Transform for FullCalendar
         $events = $appointments->map(function ($appointment) {
             return [
@@ -237,7 +239,7 @@ class AppointmentController extends Controller
     public function getDoctorsByDepartment(Request $request)
     {
         $departmentId = $request->department_id;
-        
+
         $doctors = User::where('role', 'doctor')
             ->where('department_id', $departmentId)
             ->orderBy('name')
@@ -266,7 +268,7 @@ class AppointmentController extends Controller
     private function checkDoctorAvailability($doctorId, $appointmentDate, $excludeId = null)
     {
         $appointmentTime = \Carbon\Carbon::parse($appointmentDate);
-        
+
         // Check working hours (9 AM - 5 PM)
         if ($appointmentTime->hour < 9 || $appointmentTime->hour >= 17) {
             return false;
@@ -308,7 +310,7 @@ class AppointmentController extends Controller
         for ($hour = $startHour; $hour < $endHour; $hour++) {
             for ($minute = 0; $minute < 60; $minute += $slotDuration) {
                 $slotTime = $date->copy()->setTime($hour, $minute);
-                
+
                 // Skip past time slots
                 if ($slotTime->isPast()) {
                     continue;
@@ -339,5 +341,10 @@ class AppointmentController extends Controller
             'cancelled' => '#EF4444',
             default => '#6B7280',
         };
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->whereDate('appointment_date', today());
     }
 }

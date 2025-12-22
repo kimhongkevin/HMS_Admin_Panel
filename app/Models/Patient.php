@@ -56,4 +56,9 @@ class Patient extends Model
     {
         return $this->hasMany(Document::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

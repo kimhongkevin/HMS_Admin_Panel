@@ -85,13 +85,17 @@
 </div>
 
 <!-- Include FullCalendar from CDN -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    var events = typeof events !== 'undefined' ? events : [];
+
+    // FIXED: Properly pass events data from Laravel to JavaScript
+    var events = @json($events);
+
+    console.log('Events loaded:', events); // Debug: check if events are loaded
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -109,6 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
             hour: 'numeric',
             minute: '2-digit',
             meridiem: 'short'
+        },
+        // Add event display options for better visibility
+        eventDisplay: 'block',
+        displayEventTime: true,
+        displayEventEnd: false,
+        // Add custom event rendering
+        eventDidMount: function(info) {
+            // Add tooltip on hover
+            info.el.title = info.event.title + '\n' +
+                           info.event.extendedProps.doctor + '\n' +
+                           info.event.extendedProps.department;
         }
     });
 
