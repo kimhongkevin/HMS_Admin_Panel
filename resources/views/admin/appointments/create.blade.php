@@ -21,7 +21,7 @@
                         <option value="">Select Patient</option>
                         @foreach($patients as $patient)
                         <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
-                            {{$patient->patient_id}} -- {{ $patient->first_name }} {{ $patient->last_name }}
+                            {{ $patient->patient_id }} -- {{ $patient->first_name }} {{ $patient->last_name }}
                         </option>
                         @endforeach
                     </select>
@@ -43,6 +43,7 @@
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <!-- Doctor Selection -->
                 <div class="mb-6">
                     <label for="doctor_id" class="block text-sm font-medium text-gray-700 mb-2">Doctor *</label>
@@ -56,7 +57,7 @@
 
                 <!-- Date Selection -->
                 <div class="mb-6">
-                    <label for="appointment_date" class="block text-sm font-medium text-gray-700 mb-2">Appointment Date *</label>
+                    <label for="appointment_date_picker" class="block text-sm font-medium text-gray-700 mb-2">Appointment Date *</label>
                     <input type="date" name="appointment_date_picker" id="appointment_date_picker" required min="{{ date('Y-m-d') }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('appointment_date') border-red-500 @enderror">
                     @error('appointment_date')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -169,7 +170,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             button.disabled = !slot.available;
 
                             if (slot.available) {
-                                button.addEventListener('click', function() {
+                                button.addEventListener('click', function(e) {
+                                    e.preventDefault();
                                     // Remove active class from all buttons
                                     timeSlots.querySelectorAll('button').forEach(btn => {
                                         btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');

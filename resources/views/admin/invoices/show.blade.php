@@ -55,9 +55,13 @@
                 <div>
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Bill To</h3>
                     <div class="mt-2 text-gray-900">
+                        @if($invoice->patient)
                         <p class="font-bold">{{ $invoice->patient->first_name }} {{ $invoice->patient->last_name }}</p>
                         <p>{{ $invoice->patient->email }}</p>
                         <p>{{ $invoice->patient->phone ?? '' }}</p>
+                        @else
+                        <div class="text-sm text-gray-500">N/A</div>
+                        @endif
                     </div>
                 </div>
                 <div class="text-right">

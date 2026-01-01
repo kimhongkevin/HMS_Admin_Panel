@@ -57,7 +57,11 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $invoice->invoice_number }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
+                            @if($invoice->patient)
                             <div class="text-sm font-medium text-gray-900">{{ $invoice->patient->first_name }} {{ $invoice->patient->last_name }}</div>
+                            @else
+                            <div class="text-sm text-gray-500">N/A</div>
+                            @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ $invoice->invoice_date->format('M d, Y') }}

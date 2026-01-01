@@ -4,7 +4,7 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="md:flex md:gap-6">
-            
+
             <div class="md:w-1/3 mb-6">
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">

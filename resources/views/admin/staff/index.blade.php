@@ -106,13 +106,17 @@
                             <a href="{{ route('admin.staff.edit', $member) }}" class="text-yellow-600 hover:text-yellow-900 text-sm font-medium">
                                 Edit
                             </a>
-                            <form action="{{ route('admin.staff.destroy', $member) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this staff member?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900 text-sm font-medium">
-                                    Delete
-                                </button>
-                            </form>
+                            @if ($member->is_active)
+                                <form action="{{ route('admin.staff.deactivate', $member) }}" method="POST" onsubmit="return confirm('Are you sure you want to deactivate this staff member? Their records will be preserved.');">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="text-orange-600 hover:text-orange-900 text-sm font-medium">
+                                        Deactivate
+                                    </button>
+                                </form>
+                            @else
+                                <span class="text-gray-400 text-sm font-medium cursor-not-allowed">Deactivated</span>
+                            @endif
                         </div>
                     </div>
                 </div>

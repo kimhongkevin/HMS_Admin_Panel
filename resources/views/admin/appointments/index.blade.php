@@ -173,19 +173,29 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                        <span class="text-blue-600 font-medium text-sm">{{ substr($appointment->patient->first_name, 0, 1) }}{{ substr($appointment->patient->last_name, 0, 1) }}</span>
+                                        @if($appointment->patient)
+                                            <span class="text-blue-600 font-medium text-sm">{{ substr($appointment->patient->first_name, 0, 1) }}{{ substr($appointment->patient->last_name, 0, 1) }}</span>
+                                        @else
+                                            <span class="text-blue-600 font-medium text-sm">N/A</span>
+                                        @endif
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</div>
-                                        <div class="text-sm text-gray-500">{{ $appointment->patient->patient_number }}</div>
+                                        <div class="text-sm font-medium text-gray-900">
+                                            @if($appointment->patient)
+                                                {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}
+                                            @else
+                                                <span class="text-gray-500">Patient Deleted</span>
+                                            @endif
+                                        </div>
+                                        <div class="text-sm text-gray-500">{{ $appointment->patient->patient_id ?? 'N/A' }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $appointment->doctor->name }}</div>
+                                <div class="text-sm text-gray-900">{{ $appointment->doctor->name ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $appointment->department->name }}</div>
+                                <div class="text-sm text-gray-900">{{ $appointment->department->name ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ $appointment->appointment_date->format('M d, Y') }}</div>

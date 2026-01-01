@@ -62,7 +62,11 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $doc->patient->first_name }} {{ $doc->patient->last_name }}</div>
+                                @if($doc->patient)
+                                    <div class="text-sm text-gray-900">{{ $doc->patient->first_name }} {{ $doc->patient->last_name }}</div>
+                                @else
+                                    <span class="text-gray-500">Patient Deleted</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
@@ -82,6 +86,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <a href="{{ route('documents.show', $doc) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
+                                <a href="{{ route('documents.edit', $doc) }}" class="text-yellow-600 hover:text-yellow-900 mr-3">Edit</a>
                                 <form action="{{ route('documents.destroy', $doc) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this document?');">
                                     @csrf
                                     @method('DELETE')

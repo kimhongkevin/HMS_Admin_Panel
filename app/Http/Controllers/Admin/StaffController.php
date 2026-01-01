@@ -20,7 +20,7 @@ class StaffController extends Controller
     {
         // Get all departments for filtering/UI purposes
         $departments = Department::all(['id', 'name']);
-        
+
         // Base query for staff users, ordered by creation date
         $query = User::with('profile', 'department')
                      ->where('role', 'staff')
@@ -67,9 +67,9 @@ class StaffController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'employee_id' => [
-                'required', 
-                'string', 
-                'max:20', 
+                'required',
+                'string',
+                'max:20',
                 'unique:users',
                 'regex:/^STF-\d{3}$/i' // Format: STF-XXX
             ],
@@ -129,8 +129,8 @@ class StaffController extends Controller
         }
 
         // Eager load necessary relationships
-        $staff->load('profile', 'department', 'invoices', 'patients'); 
-        
+        $staff->load('profile', 'department', 'invoices', 'patients');
+
         // Placeholder for activity log/performance metrics - implementation would require additional tables/logic.
         $activityLog = [
              ['action' => 'Registered Patient', 'details' => 'John Doe', 'date' => '2025-11-20'],
@@ -167,16 +167,16 @@ class StaffController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
-                'required', 
-                'string', 
-                'email', 
-                'max:255', 
+                'required',
+                'string',
+                'email',
+                'max:255',
                 Rule::unique('users')->ignore($staff->id)
             ],
             'employee_id' => [
-                'required', 
-                'string', 
-                'max:20', 
+                'required',
+                'string',
+                'max:20',
                 Rule::unique('users')->ignore($staff->id),
                 'regex:/^STF-\d{3}$/i'
             ],
@@ -198,7 +198,7 @@ class StaffController extends Controller
             $staff->employee_id = $validated['employee_id'];
             $staff->department_id = $validated['department_id'] ?? null;
             $staff->is_active = $validated['is_active'];
-            
+
             if (!empty($validated['password'])) {
                 $staff->password = Hash::make($validated['password']);
             }
@@ -230,16 +230,41 @@ class StaffController extends Controller
     }
 
     /**
+     * Deactivate the specified staff member (set is_active to false).
+     */
+    public function deactivate(User $staff)
+    {
+        if (!$staff->isStaff()) {
+             abort(404);
+        }
+
+        $name = $staff->name;
+
+        try {
+            $staff->update(['is_active' => false]);
+
+            return redirect()->route('admin.staff.index')
+                             ->with('success', 'Staff member **' . $name . '** has been deactivated. Their records remain intact for audit purposes.');
+        } catch (\Exception $e) {
+            // \Log::error('Staff deactivation failed: ' . $e->getMessage());
+            return redirect()->back()
+                             ->with('error', 'Failed to deactivate staff member. Please try again.');
+        }
+    }
+
+    /**
      * Remove the specified staff member from storage.
+     * NOTE: This method is kept for potential future use but should be used with extreme caution.
+     * Consider using deactivate() instead to preserve data integrity.
      */
     public function destroy(User $staff)
     {
         if (!$staff->isStaff()) {
              abort(404);
         }
-        
+
         $name = $staff->name;
-        
+
         $staff->delete();
 
         return redirect()->route('admin.staff.index')

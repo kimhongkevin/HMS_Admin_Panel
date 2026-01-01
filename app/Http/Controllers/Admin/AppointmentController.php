@@ -193,19 +193,22 @@ class AppointmentController extends Controller
             ->where('status', '!=', 'cancelled')
             ->get();
 
-
-
         // Transform for FullCalendar
         $events = $appointments->map(function ($appointment) {
+            $patientName = 'N/A';
+            if ($appointment->patient) {
+                $patientName = $appointment->patient->first_name . ' ' . $appointment->patient->last_name;
+            }
+
             return [
                 'id' => $appointment->id,
-                'title' => $appointment->patient->first_name . ' ' . $appointment->patient->last_name,
+                'title' => $patientName,
                 'start' => $appointment->appointment_date->toIso8601String(),
                 'backgroundColor' => $this->getStatusColor($appointment->status),
                 'borderColor' => $this->getStatusColor($appointment->status),
                 'extendedProps' => [
-                    'doctor' => $appointment->doctor->name,
-                    'department' => $appointment->department->name,
+                    'doctor' => $appointment->doctor->name ?? 'N/A',
+                    'department' => $appointment->department->name ?? 'N/A',
                     'status' => $appointment->status,
                 ],
             ];

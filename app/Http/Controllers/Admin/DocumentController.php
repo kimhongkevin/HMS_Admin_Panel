@@ -63,7 +63,7 @@ class DocumentController extends Controller
         ]);
 
         $file = $request->file('file');
-        
+
         // Store in 'documents' folder within the default disk (usually storage/app/private)
         // We use private storage for medical records
         $path = $file->store('documents');
@@ -93,6 +93,62 @@ class DocumentController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Document $document)
+    {
+        $patients = Patient::orderBy('first_name')->get();
+        return view('admin.documents.edit', compact('document', 'patients'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Document $document)
+    {
+        $request->validate([
+            'patient_id' => ['required', 'exists:patients,id'],
+            'document_type' => ['required', Rule::in(['medical_record', 'lab_report', 'prescription'])],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'document_date' => ['required', 'date'],
+            'file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png,doc,docx', 'max:10240'], // Max 10MB, nullable
+        ]);
+
+        $data = [
+            'patient_id' => $request->patient_id,
+            'document_type' => $request->document_type,
+            'title' => $request->title,
+            'description' => $request->description,
+            'document_date' => $request->document_date,
+        ];
+
+        // Handle file update if provided
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Delete old file
+            if (Storage::exists($document->file_path)) {
+                Storage::delete($document->file_path);
+            }
+
+            // Store new file
+            $path = $file->store('documents');
+
+            $data = array_merge($data, [
+                'file_path' => $path,
+                'file_name' => $file->getClientOriginalName(),
+                'file_type' => $file->getClientMimeType(),
+                'file_size' => $file->getSize(),
+            ]);
+        }
+
+        $document->update($data);
+
+        return redirect()->route('documents.index')->with('success', 'Document updated successfully.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Document $document)
@@ -118,7 +174,7 @@ class DocumentController extends Controller
 
         return Storage::download($document->file_path, $document->file_name);
     }
-    
+
     /**
      * Show documents for a specific patient
      */

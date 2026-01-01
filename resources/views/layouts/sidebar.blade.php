@@ -1,4 +1,4 @@
-<aside class="w-72 bg-white shadow-2xl min-h-screen border-r border-sky-100">
+<aside class="w-72 bg-sky-200 shadow-2xl min-h-screen border-r border-sky-100">
     <nav class="mt-6 px-4">
         <!-- Dashboard Link -->
         <a href="{{ route('dashboard') }}" class="group flex items-center px-4 py-3.5 text-base font-semibold rounded-xl text-sky-700 bg-gradient-to-r from-sky-50 to-sky-100 hover:from-sky-100 hover:to-sky-200 transition-all duration-200 shadow-sm hover:shadow-md mb-2">

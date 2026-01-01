@@ -7,7 +7,7 @@
     <title>{{ config('app.name', 'HMS') }} - @yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gradient-to-r from-sky-50 to-sky-400">
+<body class="font-sans antialiased bg-slate-200">
     <div class="min-h-screen">
         @include('layouts.navigation')
 

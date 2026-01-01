@@ -22,7 +22,7 @@
                         <option value="">Select Patient</option>
                         @foreach($patients as $patient)
                         <option value="{{ $patient->id }}" {{ old('patient_id', $appointment->patient_id) == $patient->id ? 'selected' : '' }}>
-                            {{ $patient->first_name }} {{ $patient->last_name }} ({{ $patient->patient_number }})
+                            {{ $patient->patient_id }} -- {{ $patient->first_name }} {{ $patient->last_name }}
                         </option>
                         @endforeach
                     </select>
@@ -47,19 +47,14 @@
 
                 <!-- Doctor Selection -->
                 <div class="mb-6">
-                <label for="doctor_id" class="block text-sm font-medium text-gray-700 mb-2">Doctor *</label>
-                <select name="doctor_id" id="doctor_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('doctor_id') border-red-500 @enderror">
-                    {{--
-                    FIX: We removed the @foreach loop here because:
-                    1. $doctors is not passed from the controller.
-                    2. Your JavaScript automatically populates this list when a Department is selected.
-                    --}}
-                    <option value="">Select Department First</option>
-                </select>
-                @error('doctor_id')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
+                    <label for="doctor_id" class="block text-sm font-medium text-gray-700 mb-2">Doctor *</label>
+                    <select name="doctor_id" id="doctor_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('doctor_id') border-red-500 @enderror">
+                        <option value="">Select Department First</option>
+                    </select>
+                    @error('doctor_id')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
                 <!-- Date Selection -->
                 <div class="mb-6">
@@ -187,7 +182,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
 
                             if (slot.available) {
-                                button.addEventListener('click', function() {
+                                button.addEventListener('click', function(e) {
+                                    e.preventDefault();
                                     // Remove active class from all buttons
                                     timeSlots.querySelectorAll('button').forEach(btn => {
                                         btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');

@@ -54,19 +54,25 @@
                         <dl class="space-y-3">
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Name</dt>
-                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</dd>
+                                <dd class="text-sm text-gray-900 mt-1">
+                                    @if($appointment->patient)
+                                        {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}
+                                    @else
+                                        <span class="text-gray-500">Patient Deleted</span>
+                                    @endif
+                                </dd>
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Patient Number</dt>
-                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->patient_number }}</dd>
+                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->patient_id ?? 'N/A' }}</dd>
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Email</dt>
-                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->email }}</dd>
+                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->email ?? 'N/A' }}</dd>
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Phone</dt>
-                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->phone }}</dd>
+                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->patient->phone ?? 'N/A' }}</dd>
                             </div>
                         </dl>
                     </div>
@@ -82,11 +88,11 @@
                         <dl class="space-y-3">
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Doctor</dt>
-                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->doctor->name }}</dd>
+                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->doctor->name ?? 'N/A' }}</dd>
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Department</dt>
-                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->department->name }}</dd>
+                                <dd class="text-sm text-gray-900 mt-1">{{ $appointment->department->name ?? 'N/A' }}</dd>
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Date</dt>

@@ -13,13 +13,19 @@
                 <a href="{{ route('admin.staff.edit', $staff) }}" class="inline-flex items-center px-4 py-2 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition ease-in-out duration-150">
                     Edit Profile
                 </a>
-                <form action="{{ route('admin.staff.destroy', $staff) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this staff member?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Delete Staff
+                @if ($staff->is_active)
+                    <form action="{{ route('admin.staff.deactivate', $staff) }}" method="POST" onsubmit="return confirm('Are you sure you want to deactivate this staff member? All related documents and invoices will remain intact and traceable.');">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-orange-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            Deactivate Staff
+                        </button>
+                    </form>
+                @else
+                    <button disabled class="inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest cursor-not-allowed">
+                        Already Deactivated
                     </button>
-                </form>
+                @endif
             </div>
         </div>
 

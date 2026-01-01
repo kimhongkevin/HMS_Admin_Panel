@@ -53,6 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Department Management
         Route::resource('departments', DepartmentController::class);
+        Route::patch('staff/{staff}/deactivate', [StaffController::class, 'deactivate'])
+            ->name('staff.deactivate');
 
         // Fee Category Management - ADD THIS SECTION
         Route::resource('fee-categories', FeeCategoryController::class);
