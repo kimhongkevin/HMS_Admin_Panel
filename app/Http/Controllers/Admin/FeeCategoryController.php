@@ -45,7 +45,7 @@ class FeeCategoryController extends Controller
 
         FeeCategory::create($validated);
 
-        return redirect()->route('fee-categories.index')
+        return redirect()->route('admin.fee-categories.index')
             ->with('success', 'Fee category created successfully.');
     }
 
@@ -85,7 +85,7 @@ class FeeCategoryController extends Controller
 
         $feeCategory->update($validated);
 
-        return redirect()->route('fee-categories.index')
+        return redirect()->route('admin.fee-categories.index')
             ->with('success', 'Fee category updated successfully.');
     }
 
@@ -96,13 +96,13 @@ class FeeCategoryController extends Controller
     {
         // Check if category has fees
         if ($feeCategory->fees()->count() > 0) {
-            return redirect()->route('Admin.fee-categories.index')
+            return redirect()->route('admin.fee-categories.index')
                 ->with('error', 'Cannot delete category with existing fees.');
         }
 
         $feeCategory->delete();
 
-        return redirect()->route('fee-categories.index')
+        return redirect()->route('admin.fee-categories.index')
             ->with('success', 'Fee category deleted successfully.');
     }
 

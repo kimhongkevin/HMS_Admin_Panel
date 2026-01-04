@@ -11,6 +11,7 @@ class Patient extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // Add to Patient.php model's $fillable array
     protected $fillable = [
         'patient_id',
         'first_name',
@@ -22,12 +23,17 @@ class Patient extends Model
         'blood_group',
         'address',
         'emergency_contact',
-        'medical_history'
+        'medical_history',
+        'discharge_status', // Add this
+        'discharge_date',   // Add this
+        'discharge_notes',  // Add this
     ];
 
+    // Add to $casts array
     protected $casts = [
         'date_of_birth' => 'date',
-        'emergency_contact' => 'array', // Handles JSON automatically
+        'discharge_date' => 'datetime', // Add this
+        'emergency_contact' => 'array',
     ];
 
     // Accessors

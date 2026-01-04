@@ -50,63 +50,69 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Staff Management
         Route::resource('staff', StaffController::class);
-
-        // Department Management
-        Route::resource('departments', DepartmentController::class);
         Route::patch('staff/{staff}/deactivate', [StaffController::class, 'deactivate'])
             ->name('staff.deactivate');
 
-        // Fee Category Management - ADD THIS SECTION
+        // Department Management
+        Route::resource('departments', DepartmentController::class);
+
+        // Fee Category Management
         Route::resource('fee-categories', FeeCategoryController::class);
         Route::patch('fee-categories/{feeCategory}/toggle-status', [FeeCategoryController::class, 'toggleStatus'])
             ->name('fee-categories.toggle-status');
 
-        // Fee Management - ADD THIS SECTION
+        // Fee Management
         Route::resource('fees', FeeController::class);
         Route::patch('fees/{fee}/toggle-status', [FeeController::class, 'toggleStatus'])
             ->name('fees.toggle-status');
     });
 
-    // Admin and Staff routes
+    // Admin and Staff routes (for discharge feature)
     Route::middleware(['role:admin,staff'])->group(function () {
-        Route::resource('patients', PatientController::class);
-        Route::patch('patients/{patient}/toggle-status', [PatientController::class, 'toggleStatus'])
-            ->name('patients.toggle-status');
-        Route::resource('appointments', AppointmentController::class);
+        Route::post('patients/{patient}/discharge', [PatientController::class, 'discharge'])
+            ->name('patients.discharge');
+        Route::put('patients/{patient}/restore', [PatientController::class, 'restore'])
+            ->name('patients.restore');
+
         Route::get('/appointments-calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
         Route::post('/appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.updateStatus');
         Route::get('/api/check-availability', [AppointmentController::class, 'checkAvailability'])->name('appointments.checkAvailability');
         Route::get('/api/doctors-by-department', [AppointmentController::class, 'getDoctorsByDepartment'])->name('appointments.doctorsByDepartment');
-        Route::resource('invoices', InvoiceController::class);
+
         Route::patch('invoices/{invoice}/status', [InvoiceController::class, 'updateStatus'])->name('invoices.status');
         Route::get('invoices/{invoice}/pdf', [InvoiceController::class, 'downloadPDF'])->name('invoices.pdf');
     });
-    // Admin, Doctor, and Staff routes
+
+    // Shared routes for Admin, Doctor, and Staff
     Route::middleware(['role:admin,doctor,staff'])->group(function () {
-        Route::resource('appointments', AppointmentController::class);
-        Route::resource('documents', DocumentController::class);
+        // Patient routes
         Route::resource('patients', PatientController::class);
-        Route::resource('invoices', InvoiceController::class);
-        Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
-        Route::get('patients/{patient}/documents', [DocumentController::class, 'patientDocuments'])->name('patient.documents');
         Route::get('patients/{patient}/appointments', [AppointmentController::class, 'patientAppointments'])
             ->name('patient.appointments');
+        Route::get('patients/{patient}/documents', [DocumentController::class, 'patientDocuments'])
+            ->name('patient.documents');
         Route::get('patients/{patient}/invoices', [InvoiceController::class, 'patientInvoices'])
             ->name('patient.invoices');
+
+        // Appointment routes
+        Route::resource('appointments', AppointmentController::class);
+
+        // Document routes
+        Route::resource('documents', DocumentController::class);
+        Route::get('documents/{document}/download', [DocumentController::class, 'download'])
+            ->name('documents.download');
+
+        // Invoice routes
+        Route::resource('invoices', InvoiceController::class);
     });
 
-    // AJAX Routes for Appointments (accessible by admin/staff)
+    // AJAX Routes
     Route::middleware(['role:admin,staff,doctor'])->prefix('api')->group(function() {
-        Route::get('/get-doctors', [App\Http\Controllers\Admin\AppointmentController::class, 'getDoctors'])->name('api.doctors');
-        Route::get('/get-slots', [App\Http\Controllers\Admin\AppointmentController::class, 'getSlots'])->name('api.slots');
-        // ADD THIS - AJAX route for getting fees by category
+        Route::get('/get-doctors', [AppointmentController::class, 'getDoctors'])->name('api.doctors');
+        Route::get('/get-slots', [AppointmentController::class, 'getSlots'])->name('api.slots');
         Route::get('/fees-by-category', [FeeController::class, 'getByCategory'])->name('api.fees-by-category');
-    });
-
-    // Appointment Management
-    Route::middleware(['role:admin,staff,doctor'])->group(function () {
-        Route::resource('appointments', App\Http\Controllers\Admin\AppointmentController::class);
     });
 });
 
 require __DIR__.'/auth.php';
+

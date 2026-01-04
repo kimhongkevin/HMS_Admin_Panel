@@ -12,6 +12,7 @@ class PatientController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // Update the index method to handle discharge filter
     public function index(Request $request)
     {
         $query = Patient::query();
@@ -21,9 +22,9 @@ class PatientController extends Controller
             $search = $request->get('search');
             $query->where(function($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhere('patient_id', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('patient_id', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
@@ -32,16 +33,55 @@ class PatientController extends Controller
             $query->where('blood_group', $request->blood_group);
         }
 
+        // Filter by Discharge Status
+        if ($request->has('discharge_status')) {
+            $status = $request->discharge_status;
+            if ($status == 'discharged') {
+                $query->where('discharge_status', 'discharged');
+            } elseif ($status == 'active') {
+                $query->where('discharge_status', '!=', 'discharged')->orWhereNull('discharge_status');
+            }
+        }
+
         $patients = $query->latest()->paginate(10);
 
-        // Stats for the Dashboard Cards (Visual requirement)
+        // Stats for the Dashboard Cards (Updated)
         $totalPatients = Patient::count();
-        $activePatients = Patient::whereNull('deleted_at')->count(); // Logic can be adjusted based on 'status' column if added later
+        $activePatients = Patient::where('discharge_status', '!=', 'discharged')
+                            ->orWhereNull('discharge_status')
+                            ->count();
         $todayPatients = Patient::whereDate('created_at', today())->count();
+        $dischargedPatients = Patient::where('discharge_status', 'discharged')->count();
 
-        return view('admin.patients.index', compact('patients', 'totalPatients', 'activePatients', 'todayPatients'));
+        return view('admin.patients.index', compact('patients', 'totalPatients', 'activePatients', 'todayPatients', 'dischargedPatients'));
     }
 
+    // Add new discharge method
+    public function discharge(Request $request, Patient $patient)
+    {
+        $validated = $request->validate([
+            'discharge_date' => 'required|date',
+            'discharge_notes' => 'nullable|string',
+        ]);
+
+        $validated['discharge_status'] = 'discharged';
+
+        $patient->update($validated);
+
+        return redirect()->route('patients.show', $patient->id)->with('success', 'Patient discharged successfully.');
+    }
+
+    // Add new restore method (to mark as active again)
+    public function restore(Patient $patient)
+    {
+        $patient->update([
+            'discharge_status' => null,
+            'discharge_date' => null,
+            'discharge_notes' => null,
+        ]);
+
+        return redirect()->route('patients.show', $patient->id)->with('success', 'Patient restored to active status.');
+    }
     /**
      * Show the form for creating a new resource.
      */
